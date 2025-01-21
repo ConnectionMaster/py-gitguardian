@@ -1,10 +1,9 @@
 """PyGitGuardian API Client"""
-from .client import GGClient
+
+from .client import ContentTooLarge, GGClient, GGClientCallbacks
 
 
-__version__ = "1.3.4"
+__version__ = "1.19.0"
 GGClient._version = __version__
 
-__all__ = [
-    "GGClient",
-]
+__all__ = ["GGClient", "GGClientCallbacks", "ContentTooLarge"]
