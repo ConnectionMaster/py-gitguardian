@@ -1478,7 +1478,6 @@ class TeamSourceParameters(PaginationParameter, SearchParameter, ToDictMixin):
     last_scan_status: Optional[ScanStatus] = None
     type: Optional[str] = None
     health: Optional[SourceHealth] = None
-    type: Optional[str] = None
     ordering: Optional[Literal["last_scan_date", "-last_scan_date"]] = None
     visibility: Optional[str] = None
     external_id: Optional[str] = None
