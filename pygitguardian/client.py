@@ -542,7 +542,7 @@ class GGClient:
 
     def scan_and_create_incidents(
         self,
-        documents: List[Dict[str, str]],
+        documents: List[Dict[str, Any]],
         source_uuid: UUID,
         *,
         extra_headers: Optional[Dict[str, str]] = None,
@@ -554,8 +554,8 @@ class GGClient:
         character.
 
         :param documents: List of dictionaries containing the keys document
-        and, optionally, filename.
-            example: [{"document":"example content","filename":"intro.py"}]
+        and, optionally, filename and location.
+            example: [{"document":"example content","filename":"intro.py","location":{"url":"https://example.com"}}]
         :param source_uuid: the source UUID that will be used to identify the custom source, for which
         incidents will be created
         :param extra_headers: additional headers to add to the request
@@ -584,8 +584,9 @@ class GGClient:
             "source_uuid": source_uuid,
             "documents": [
                 {
-                    "filename": document["filename"],
-                    "document": document["document"],
+                    key: document[key]
+                    for key in ("filename", "document", "location")
+                    if document.get(key) is not None
                 }
                 for document in request_obj
             ],
