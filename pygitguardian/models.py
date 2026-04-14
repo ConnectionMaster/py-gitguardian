@@ -89,6 +89,7 @@ class Document(Base):
     Attributes:
         filename (optional,str): filename for filename evaluation
         document (str): text content
+        location (optional,dict): origin of the document, with a required http/https url key
     """
 
     SCHEMA = DocumentSchema()
