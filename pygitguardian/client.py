@@ -20,6 +20,7 @@ from .config import (
     MAXIMUM_PAYLOAD_SIZE,
 )
 from .models import (
+    AIDiscovery,
     APITokensResponse,
     CreateInvitation,
     CreateInvitationParameters,
@@ -38,6 +39,8 @@ from .models import (
     InvitationParameters,
     JWTResponse,
     JWTService,
+    MCPActivityRequest,
+    MCPActivityResponse,
     Member,
     MembersParameters,
     MultiScanResult,
@@ -1193,3 +1196,43 @@ class GGClient:
 
         if not is_delete_ok(response):
             return load_detail(response)
+
+    def send_ai_discovery(
+        self,
+        ai_discovery: AIDiscovery,
+        extra_headers: Optional[Dict[str, str]] = None,
+    ) -> Union[Detail, AIDiscovery]:
+        response = self.post(
+            endpoint="nhi/ai/discovery",
+            data=ai_discovery.to_dict(),
+            extra_headers=extra_headers,
+        )
+
+        obj: Union[Detail, AIDiscovery]
+        if is_ok(response):
+            obj = AIDiscovery.from_dict(response.json())
+        else:
+            obj = load_detail(response)
+
+        obj.status_code = response.status_code
+        return obj
+
+    def log_mcp_activity(
+        self,
+        activity: MCPActivityRequest,
+        extra_headers: Optional[Dict[str, str]] = None,
+    ) -> Union[Detail, MCPActivityResponse]:
+        response = self.post(
+            endpoint="nhi/ai/mcp-activity",
+            data=activity.to_dict(),
+            extra_headers=extra_headers,
+        )
+
+        obj: Union[Detail, MCPActivityResponse]
+        if is_ok(response):
+            obj = MCPActivityResponse.from_dict(response.json())
+        else:
+            obj = load_detail(response)
+
+        obj.status_code = response.status_code
+        return obj
