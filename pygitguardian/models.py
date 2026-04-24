@@ -762,6 +762,7 @@ class TokenScope(str, Enum):
     AUDIT_LOGS_READ = "audit_logs:read"
     HONEYTOKENS_READ = "honeytokens:read"
     HONEYTOKENS_WRITE = "honeytokens:write"
+    HONEYTOKENS_CHECK = "honeytokens:check"
     API_TOKENS_READ = "api_tokens:read"
     API_TOKENS_WRITE = "api_tokens:write"
     IP_ALLOWLIST_READ = "ip_allowlist:read"
