@@ -1,5 +1,17 @@
 # Changelog
 
+<a id='changelog-1.30.0'></a>
+
+## 1.30.0 — 2026-04-28
+
+### Added
+
+- `scan_and_create_incidents`: documents now accept an optional `location` field containing an http/https URL identifying the origin of the document.
+
+- New endpoints `send_ai_discovery()` and `log_mcp_activity`, with associated models.
+
+- New `honeytokens:check` token scope for prefix-based honeytoken lookup.
+
 <a id='changelog-1.29.0'></a>
 
 ## 1.29.0 — 2026-01-27
