@@ -37,9 +37,14 @@ from .models_utils import (
 )
 
 
+class DocumentLocationSchema(BaseSchema):
+    url = fields.Url(required=True, schemes={"http", "https"})
+
+
 class DocumentSchema(BaseSchema):
     filename = fields.String(validate=validate.Length(max=256), allow_none=True)
     document = fields.String(required=True)
+    location = fields.Nested(DocumentLocationSchema, allow_none=True, load_default=None)
 
     @staticmethod
     def validate_size(document: Dict[str, Any], maximum_size: int) -> None:
@@ -84,15 +89,24 @@ class Document(Base):
     Attributes:
         filename (optional,str): filename for filename evaluation
         document (str): text content
+        location (optional,dict): origin of the document, with a required http/https url key
     """
 
     SCHEMA = DocumentSchema()
 
-    def __init__(self, document: str, filename: Optional[str] = None, **kwargs: Any):
+    def __init__(
+        self,
+        document: str,
+        filename: Optional[str] = None,
+        location: Optional[Dict[str, str]] = None,
+        **kwargs: Any,
+    ):
         super().__init__()
         self.document = document
         if filename:
             self.filename = filename
+        if location:
+            self.location = location
 
     def __repr__(self) -> str:
         return f"filename:{self.filename}, document:{self.document}"

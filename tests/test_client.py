@@ -699,6 +699,47 @@ def test_scan_and_create_incidents_payload_structure(client: GGClient):
 
 
 @responses.activate
+def test_scan_and_create_incidents_payload_with_location(client: GGClient):
+    """
+    GIVEN a ggclient
+    WHEN calling scan_and_create_incidents with a document location
+    THEN the location is included in the payload
+    """
+
+    location = {"url": "https://wiki.example.com/my-config-page"}
+    documents = [{"filename": FILENAME, "document": DOCUMENT, "location": location}]
+    source_uuid = "123e4567-e89b-12d3-a456-426614174000"
+
+    expected_payload = {
+        "documents": [
+            {
+                "document": DOCUMENT,
+                "filename": FILENAME,
+                "location": location,
+            }
+        ],
+        "source_uuid": source_uuid,
+    }
+
+    mock_response = responses.post(
+        url=client._url_from_endpoint("scan/create-incidents", "v1"),
+        status=200,
+        match=[matchers.json_params_matcher(expected_payload)],
+        json=[
+            {
+                "policy_break_count": 0,
+                "policies": ["pol"],
+                "policy_breaks": [],
+            }
+        ],
+    )
+
+    client.scan_and_create_incidents(documents, source_uuid)
+
+    assert mock_response.call_count == 1
+
+
+@responses.activate
 def test_retrieve_secret_incident(client: GGClient):
     """
     GIVEN a ggclient
